@@ -22,18 +22,20 @@ public abstract class LoadBalancer {
     final int X_SECONDS = 20000;
     int requestCount;
 
+    protected Random random;
     public List<String> instances = new ArrayList();
-    public Set<String> excludedInstances = new HashSet<String>();
-    public Set<String> aliveProviders = new HashSet<String>();
-    public Set<String> heartbeatChecked = new HashSet<String>();
+    public Set<String> excludedInstances = new HashSet<>();
+    public Set<String> aliveProviders = new HashSet<>();
+    public Set<String> heartbeatChecked = new HashSet<>();
     public Map<String, Provider> providerMap = new HashMap<>();
 
     public LoadBalancer () {
         requestCount = 0;
+        random = new Random();
     }
 
     @Before("execution(* com.iptq.loadbalance.LoadBalancer.get(..))")
-    public void beforeAdvice() throws Exception {
+    public void beforeAdvice() throws HttpClientErrorException {
         requestCount++;
         if(requestCount> (Y_MAX_NUM_OF_PARALLEL_REQS * aliveProviders.size())) {
             throw new HttpClientErrorException(HttpStatus.TOO_MANY_REQUESTS);
@@ -55,7 +57,7 @@ public abstract class LoadBalancer {
 
     @Async
     @Scheduled(fixedRate = X_SECONDS)
-    public void healthChecker() throws InterruptedException {
+    public void healthChecker() {
         System.out.println(
                 "Health check started - " + System.currentTimeMillis() / 1000);
         for (String instanceId : instances) {
