@@ -22,6 +22,7 @@ public abstract class LoadBalancer {
     final int X_SECONDS = 20000;
     int requestCount;
 
+    protected Random random;
     public List<String> instances = new ArrayList();
     public Set<String> excludedInstances = new HashSet<String>();
     public Set<String> aliveProviders = new HashSet<String>();
@@ -30,6 +31,7 @@ public abstract class LoadBalancer {
 
     public LoadBalancer () {
         requestCount = 0;
+        random = new Random();
     }
 
     @Before("execution(* com.iptq.loadbalance.LoadBalancer.get(..))")

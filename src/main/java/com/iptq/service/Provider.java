@@ -6,9 +6,11 @@ import java.util.UUID;
 public class Provider {
 
     private UUID providerId;
+    private Random random;
 
     void Provider() {
         this.providerId = UUID.randomUUID();
+        random = new Random();
     }
 
     public String getInstance() {
@@ -16,6 +18,6 @@ public class Provider {
     }
 
     public Boolean check() {
-        return new Random().nextBoolean();
+        return random.nextBoolean();
     }
 }
