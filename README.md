@@ -1,5 +1,5 @@
-# IptiQLoadBalancer
-Load Balancer for IptiQ
+# LoadBalancer
+Load Balancer
 
 A load balancer is a component that, once
 invoked, it distributes incoming requests to a list of
